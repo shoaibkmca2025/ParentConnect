@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load i18n %}
+    <meta charset="UTF-8">
+    <title>{% trans "Student Performance" %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f9faff;
+        }
+        .box {
+            background: white;
+            padding: 25px;
+            max-width: 550px;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2980b9;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background: #2980b9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        input[type="submit"]:hover {
+            background: #1c5a85;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2980b9;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>{% trans "Welcome to ParentConnect" %}</h1>
+    <h2>{% trans "Update Student Performance" %}</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>{% trans "Student Name" %}:</label>
+        <select name="student_name" required>
+            <option value="">{% trans "-- Select Student --" %}</option>
+            {% for student in students %}
+                <option value="{{ student.name }}">{{ student.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>{% trans "Subject" %}:</label>
+        <input type="text" name="subject" required>
+
+        <label>{% trans "Performance Score (%)" %}:</label>
+        <input type="number" name="score" min="0" max="100" required>
+
+        <label>{% trans "Remarks" %}:</label>
+        <textarea name="remarks" rows="4"></textarea>
+
+        <input type="submit" value="{% trans 'Save Performance' %}">
+    </form>
+
+    <a href="{% url 'teacher_dashboard' %}" class="back-btn">⬅ {% trans "Back to Dashboard" %}</a>
+</div>
+</body>
+</html>

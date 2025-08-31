@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Diary</title>
+</head>
+<body>
+    <h2>📒 Diary Updates</h2>
+    {% if diaries %}
+        <ul>
+        {% for d in diaries %}
+            <li>
+                <strong>{{ d.title }}</strong> - {{ d.created_at|date:"d M Y" }}<br>
+                {{ d.content }}<br>
+                {% if d.file %}
+                    <a href="{{ d.file.url }}" target="_blank">📂 Download</a>
+                {% endif %}
+                <hr>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No diary updates yet.</p>
+    {% endif %}
+</body>
+</html>

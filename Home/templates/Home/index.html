@@ -1,0 +1,354 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% trans "ParentConnect - Home" %}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: none;
+      color: #2a2139;
+      line-height: 1.5;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 0;
+    }
+    /* Vibrant Background Video */
+    .bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.75) saturate(1.35) hue-rotate(-15deg);
+    }
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 5%;
+      background: linear-gradient(90deg, #ff7eb3 10%, #65d6ce 80%);
+      box-shadow: 0 2px 12px rgba(100,0,50,0.22);
+      z-index: 100;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #fff;
+      font-family: 'Shadows Into Light', cursive;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 6px #6a11cb50;
+    }
+    nav .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+    nav a {
+      color: #fffde4;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+      position: relative;
+    }
+    nav a:hover,
+    nav a.active {
+      color: #ffe359;
+    }
+    nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 100%; height: 3px;
+      background: #ffe359;
+      border-radius: 2px;
+    }
+    /* Language Select */
+    .language-select {
+      background: linear-gradient(45deg, #efd5ff 10%, #65d6ce 90%);
+      color: #342;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.24s;
+    }
+    .language-select:hover {
+      background: linear-gradient(45deg, #ffe359, #ff7eb3 90%);
+      color: #1a1616;
+    }
+    /* Hero */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 92vh;
+      text-align: center;
+      padding: 0 20px;
+      color: #fff;
+      font-family: 'Shadows Into Light', cursive;
+      background: none;
+    }
+    .hero-text h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 1rem;
+      color: #ffe359;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 12px #6a11cb80;
+    }
+    .hero-text p {
+      font-size: 1.5rem;
+      margin-bottom: 2.3rem;
+      font-weight: 700;
+      color: #fffde4;
+      text-shadow: 0 2px 8px #ff7eb370;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 21px;
+      justify-content: center;
+    }
+    .cta-buttons a {
+      display: inline-block;
+      background: linear-gradient(90deg, #65d6ce 10%, #ff7eb3 90%);
+      color: #1a213a;
+      padding: 15px 38px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 24px #ff7eb360;
+      transition: transform 0.23s, box-shadow 0.23s;
+      border: none;
+      text-decoration: none;
+    }
+    .cta-buttons a:hover {
+      background: linear-gradient(90deg,#ffe359 10%, #ff7eb3 90%);
+      color: #222;
+      box-shadow: 0 12px 36px #ffe35988;
+      transform: scale(1.09);
+    }
+    /* Section Titles */
+    section {
+      padding: 74px 0 35px;
+      text-align: center;
+      font-weight: 800;
+      color: #ffe359;
+      font-size: 2.3rem;
+      text-shadow: 0 2px 12px #65d6ce90;
+      font-family: 'Shadows Into Light', cursive;
+      letter-spacing: 1.5px;
+    }
+    /* Service Cards */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+      gap: 35px;
+      padding: 0 15px 60px;
+    }
+    .service-card {
+      background: linear-gradient(130deg, #65d6cecc, #fff6eacc 70%);
+      border-radius: 26px;
+      padding: 46px 36px;
+      color: #222;
+      box-shadow: 0 8px 24px #ff7eb35c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      transition: transform 0.26s, box-shadow 0.26s;
+    }
+    .service-card:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 18px 40px #65d6ce67;
+      background: linear-gradient(120deg, #fffde4 0%, #ff7eb3 100%);
+    }
+    .service-card .icon {
+      font-size: 3.7rem;
+      margin-bottom: 22px;
+      text-shadow: 0 2px 10px #65d6ce60;
+    }
+    .service-card h3 {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.8rem;
+      margin-bottom: 13px;
+      color: #ff7eb3;
+      text-shadow: 0 2px 8px #65d6ce40;
+    }
+    .service-card p {
+      font-size: 1.08rem;
+      line-height: 1.5;
+      color: #4d3558;
+      font-weight: 600;
+      flex-grow: 1;
+      text-shadow: 0 1px 6px #fff6ea70;
+    }
+    /* Contact Section */
+    #contact h2 {
+      margin-bottom: 22px;
+    }
+    #contact p {
+      font-size: 1.13rem;
+      color: #fffde4;
+      font-weight: 500;
+    }
+    #contact a {
+      color: #ff7eb3;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    #contact a:hover {
+      color: #ffe359;
+    }
+    /* Footer */
+    footer {
+      background: linear-gradient(90deg, #ff7eb3 30%, #65d6ce 100%);
+      color: #ffe359;
+      font-weight: 700;
+      padding: 20px;
+      text-align: center;
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.13rem;
+      letter-spacing: 1px;
+      box-shadow: 0 -2px 16px #65d6ce60;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+      .hero-text p {
+        font-size: 1.09rem;
+      }
+      section {
+        font-size: 1.54rem;
+      }
+      .card-container {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .service-card h3 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  {% load static %}
+<video autoplay loop muted playsinline class="bg-video">
+    <source src="{% static 'media/school.mp4' %}" type="video/mp4" />
+</video>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">ParentConnect</div>
+    <div class="nav-links">
+      <a href="#home" class="active">{% trans "Home" %}</a>
+      <a href="#about">{% trans "About" %}</a>
+      <a href="#services">{% trans "Services" %}</a>
+      <a href="#contact">{% trans "Contact" %}</a>
+    </div>
+    <form action="{% url 'set_language' %}" method="post">
+      {% csrf_token %}
+      <select name="language" class="language-select" onchange="this.form.submit()">
+        <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+        <option value="hi" {% if LANGUAGE_CODE == 'hi' %}selected{% endif %}>हिंदी</option>
+        <option value="mr" {% if LANGUAGE_CODE == 'mr' %}selected{% endif %}>मराठी</option>
+      </select>
+    </form>
+  </nav>
+  <!-- Hero -->
+  <header id="home">
+    <div class="hero-text">
+      <h1>{% trans "Connecting Parents & Schools Seamlessly" %}</h1>
+      <p>{% trans "Smart insights, easy communication, and real-time updates in one place." %}</p>
+      <div class="cta-buttons">
+        <a href="login.html">{% trans "Login" %}</a>
+        <a href="{% url 'register_parent' %}">{% trans "Register as Parent" %}</a>
+      </div>
+    </div>
+  </header>
+  <!-- About -->
+  <section id="about" class="container">
+    <h2>{% trans "About ParentConnect" %}</h2>
+    <p style="max-width: 800px; margin: 0 auto; color: #fffde4;">
+      {% trans "ParentConnect is a smart platform that bridges the gap between schools and families by providing tools for communication, updates, and academic tracking." %}
+    </p>
+  </section>
+  <!-- Services -->
+  <section id="services" class="container">
+    <h2>{% trans "Our Services" %}</h2>
+    <div class="card-container">
+      <div class="service-card">
+        <div class="icon">📘</div>
+        <h3>{% trans "Diary" %}</h3>
+        <p>{% trans "Access homework, classwork & teacher notes instantly." %}</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">📢</div>
+        <h3>{% trans "Alerts" %}</h3>
+        <p>{% trans "Get school announcements, event, and transport notifications in real time." %}</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">📊</div>
+        <h3>{% trans "Performance" %}</h3>
+        <p>{% trans "View attendance and academic grades at a glance." %}</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">📩</div>
+        <h3>{% trans "Messages" %}</h3>
+        <p>{% trans "Secure, private communication with teachers and school staff." %}</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">📄</div>
+        <h3>{% trans "Reports" %}</h3>
+        <p>{% trans "Access and download student academic reports online." %}</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🚌</div>
+        <h3>{% trans "Transport Tracking" %}</h3>
+        <p>{% trans "Track the live location of school buses for safety and punctuality." %}</p>
+      </div>
+    </div>
+  </section>
+  <!-- Contact -->
+  <section id="contact" class="container">
+    <h2>{% trans "Contact Us" %}</h2>
+    <p style="color: #fffde4;">{% trans "Need help? We'd love to hear from you." %}</p>
+    <p><a href="mailto:support@parentconnect.com" style="color: #ff7eb3; text-decoration: none;">support@parentconnect.com</a></p>
+  </section>
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 ParentConnect — {% trans "Crafted for connected classrooms." %}
+  </footer>
+</body>
+</html>

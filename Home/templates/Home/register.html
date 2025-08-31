@@ -1,0 +1,144 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Student Register" %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4ff;
+            padding: 40px;
+        }
+        .register-box {
+            background: white;
+            padding: 30px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background: #217dbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-box">
+        <h2>{% trans "Student Register" %}</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="hidden" name="user_type" value="student">
+
+            <label>{% trans "Name" %}:</label>
+            <input type="text" name="name" required>
+
+            <label>{% trans "Standard" %}:</label>
+            <select name="std" required>
+                <option value="">{% trans "Select Standard" %}</option>
+                <option value="1st Grade">1st Grade</option>
+                <option value="2nd Grade">2nd Grade</option>
+                <option value="3rd Grade">3rd Grade</option>
+                <option value="4th Grade">4th Grade</option>
+                <option value="5th Grade">5th Grade</option>
+                <option value="6th Grade">6th Grade</option>
+                <option value="7th Grade">7th Grade</option>
+                <option value="8th Grade">8th Grade</option>
+                <option value="9th Grade">9th Grade</option>
+                <option value="10th Grade">10th Grade</option>
+                <option value="11th Grade">11th Grade</option>
+                <option value="12th Grade">12th Grade</option>
+            </select>
+
+            <label>{% trans "Division" %}:</label>
+            <select name="division" required>
+                <option value="">{% trans "Select Division" %}</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+
+            <label>{% trans "Address" %}:</label>
+            <textarea name="address" required></textarea>
+
+            <label>{% trans "Age" %}:</label>
+            <input type="number" name="age" min="5" max="25" required>
+
+            <label>{% trans "Gender" %}:</label>
+            <select name="gender">
+                <option value="">{% trans "Select Gender" %}</option>
+                <option value="M">{% trans "Male" %}</option>
+                <option value="F">{% trans "Female" %}</option>
+                <option value="O">{% trans "Other" %}</option>
+            </select>
+
+            <label>{% trans "Date of Birth" %}:</label>
+            <input type="date" name="date_of_birth">
+
+            <label>{% trans "Blood Group" %}:</label>
+            <input type="text" name="blood_group" placeholder="e.g. A+, B-, O+">
+
+            <label>{% trans "Email" %}:</label>
+            <input type="email" name="email">
+
+            <label>{% trans "Phone Number" %}:</label>
+            <input type="text" name="phone_number">
+
+            <label>{% trans "Father Name" %}:</label>
+            <input type="text" name="father_name">
+
+            <label>{% trans "Mother Name" %}:</label>
+            <input type="text" name="mother_name">
+
+            <label>{% trans "Guardian Email" %}:</label>
+            <input type="email" name="guardian_email">
+
+            <label>{% trans "Guardian Phone" %}:</label>
+            <input type="text" name="guardian_phone">
+
+            <label>{% trans "Admission Date" %}:</label>
+            <input type="date" name="admission_date">
+
+            <label>{% trans "Profile Picture" %}:</label>
+            <input type="file" name="profile_picture">
+
+            <label>{% trans "Select Parent (optional)" %}:</label>
+            <select name="parent_id">
+                <option value="">{% trans "No Parent Linked" %}</option>
+                {% for parent in parents %}
+                    <option value="{{ parent.id }}">{{ parent.father_name }} & {{ parent.mother_name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>{% trans "Password" %}:</label>
+            <input type="password" name="password" required>
+
+            <input type="submit" value="{% trans 'Register' %}">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Performance" %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>📊 {% trans "Performance" %}</h2>
+
+    {% if performances %}
+        <!-- Chart container -->
+        <canvas id="performanceChart" width="500" height="250"></canvas>
+
+        <script>
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ subjects|safe }},
+                    datasets: [{
+                        label: "{% trans 'Score' %}",
+                        data: {{ scores|safe }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <!-- Table -->
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>{% trans "Subject" %}</th>
+                <th>{% trans "Score" %}</th>
+                <th>{% trans "Remarks" %}</th>
+                <th>{% trans "Last Updated" %}</th>
+            </tr>
+            {% for p in performances %}
+            <tr>
+                <td>{{ p.subject }}</td>
+                <td>{{ p.score }}</td>
+                <td>{{ p.remarks }}</td>
+                <td>{{ p.updated_at|date:"d M Y" }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>{% trans "No performance records yet." %}</p>
+    {% endif %}
+</body>
+</html>

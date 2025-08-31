@@ -1,0 +1,8 @@
+<h2>{% trans "Messages from Teachers" %}</h2>
+<ul>
+    {% for msg in messages %}
+        <li><strong>{{ msg.teacher.name }}</strong>: {{ msg.message }}</li>
+    {% empty %}
+        <li>{% trans "No messages yet." %}</li>
+    {% endfor %}
+</ul>

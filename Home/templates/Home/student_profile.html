@@ -1,0 +1,135 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Student Profile" %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f8fb;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 750px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .section {
+            margin-top: 30px;
+        }
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        .label {
+            font-weight: bold;
+            color: #34495e;
+        }
+        .value {
+            color: #2c3e50;
+        }
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .back-button a {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .back-button a:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>{% trans "Welcome," %} {{ student.name }}</h2>
+
+    {% if student.profile_picture %}
+        <div style="text-align:center;">
+            <img src="{{ student.profile_picture.url }}" alt="Profile Photo"
+                 style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 2px solid #3498db;">
+        </div>
+    {% else %}
+        <p style="text-align:center;">{% trans "No profile picture uploaded." %}</p>
+    {% endif %}
+
+    <div class="section">
+        <h3>{% trans "Student Details" %}</h3>
+        <div class="profile-row">
+            <div class="label">{% trans "Standard" %}:</div>
+            <div class="value">{{ student.std }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Division" %}:</div>
+            <div class="value">{{ student.division|default:"N/A" }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Age" %}:</div>
+            <div class="value">{{ student.age }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Address" %}:</div>
+            <div class="value">{{ student.address }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Father's Name" %}:</div>
+            <div class="value">{{ student.father_name }}</div>
+        </div>
+    </div>
+
+    {% if student.parent %}
+    <div class="section">
+        <h3>{% trans "Parent Details" %}</h3>
+        <div class="profile-row">
+            <div class="label">{% trans "Father's Name" %}:</div>
+            <div class="value">{{ student.parent.father_name }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Qualification" %}:</div>
+            <div class="value">{{ student.parent.father_qualification }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Designation" %}:</div>
+            <div class="value">{{ student.parent.father_designation }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Office Address" %}:</div>
+            <div class="value">{{ student.parent.father_office_address }}</div>
+        </div>
+        <div class="profile-row">
+            <div class="label">{% trans "Phone Number" %}:</div>
+            <div class="value">{{ student.parent.father_phone }}</div>
+        </div>
+    </div>
+    {% else %}
+    <div class="section">
+        <p style="text-align:center; color: gray;">{% trans "No parent information available." %}</p>
+    </div>
+    {% endif %}
+
+    <div class="back-button">
+        <a href="{% url 'edit_profile' %}">✏️ {% trans "Edit Profile" %}</a>
+    </div>
+
+    <div class="back-button">
+        <a href="{% url 'dashboard' %}">⬅ {% trans "Back to Dashboard" %}</a>
+    </div>
+</div>
+</body>
+</html>

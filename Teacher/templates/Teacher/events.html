@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Post Event</title>
+    <style>
+        body {font-family: 'Segoe UI', sans-serif; background: #f9faff;}
+        .box {
+            background: white; padding: 25px; max-width: 550px;
+            margin: 50px auto; border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {text-align: center; color: #16a085;}
+        label {display: block; margin-top: 12px; font-weight: bold;}
+        input, textarea {
+            width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background: #16a085; color: white; border: none; cursor: pointer; margin-top: 15px;
+        }
+        input[type="submit"]:hover {background: #117964;}
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>Post School Event</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Event Title:</label>
+        <input type="text" name="title" required>
+
+        <label>Date:</label>
+        <input type="date" name="date" required>
+
+        <label>Description:</label>
+        <textarea name="description" rows="4" required></textarea>
+
+        <input type="submit" value="Post Event">
+    </form>
+<a href="{% url 'teacher_dashboard' %}" class="back-btn">⬅ Back to Dashboard</a>
+</div>
+</body>
+</html>

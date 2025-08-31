@@ -1,0 +1,144 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Student Details" %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .header {
+            text-align: center;
+            background-color: #007BFF;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #e9f0fb;
+        }
+
+        .icon-link {
+            margin-right: 8px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 18px;
+        }
+
+        .icon-link:hover {
+            text-decoration: underline;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            padding: 12px 24px;
+            margin: 30px auto 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            width: fit-content;
+        }
+
+        .back-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 30px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>{% trans "Student Details" %}</h2>
+        <p>{% trans "Total Students" %}: {{ students|length }}</p>
+    </div>
+
+    {% if students %}
+    <table>
+        <tr>
+            <th>{% trans "ID" %}</th>
+            <th>{% trans "Name" %}</th>
+            <th>{% trans "Father Name" %}</th>
+            <th>{% trans "Class" %}</th>
+            <th>{% trans "Division" %}</th>
+            <th>{% trans "Address" %}</th>
+            <th>{% trans "Age" %}</th>
+            <th>{% trans "Action" %}</th>
+        </tr>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>
+                <a href="{% url 'parent_record_by_student' student.id %}" class="icon-link" title="{% trans 'Go to Parent Record' %}">👨‍👩‍👧</a>
+                {{ student.name }}
+            </td>
+            <td>{{ student.parent.father_name }}</td>
+            <td>{{ student.class_name }}</td>
+            <td>{{ student.division }}</td>
+            <td>{{ student.address }}</td>
+            <td>{{ student.age }}</td>
+            <td>
+                <a href="{% url 'delete_student' student.id %}" onclick="return confirm('{% trans "Are you sure?" %}');">{% trans "Delete" %}</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p class="empty-message">{% trans "No student records found." %}</p>
+    {% endif %}
+
+    <a href="{% url 'teacher_dashboard' %}" class="back-btn">⬅ {% trans "Back to Dashboard" %}</a>
+</body>
+</html>

@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: mr\n"
+
+# Navigation & Hero
+msgid "Home"
+msgstr "मुख्यपृष्ठ"
+
+msgid "About"
+msgstr "परिचय"
+
+msgid "Services"
+msgstr "सेवा"
+
+msgid "Contact"
+msgstr "संपर्क"
+
+msgid "Records"
+msgstr "रिपॉर्ट्स"
+
+msgid "Welcome to ParentConnect"
+msgstr "पॅरेंटकनेक्शनमध्ये आपले स्वागत आहे"
+
+msgid "Empowering parents with smart school insights & real-time updates"
+msgstr "पालकांना स्मार्ट शाळा माहिती व रिअल-टाइम अद्यतनांसह सक्षम करणे"
+
+msgid "Login"
+msgstr "लॉगिन"
+
+msgid "Register as Parent"
+msgstr "पालक म्हणून नोंदणी करा"
+
+# Services features
+msgid "Digital Diary"
+msgstr "डिजिटल डायरी"
+
+msgid "Access homework, classwork, and teacher notes instantly."
+msgstr "हॉमवर्क, क्लासवर्क आणि शिक्षकांच्या टिपण्या तात्काळ पाहा."
+
+msgid "Instant Alerts"
+msgstr "तत्काळ सूचना"
+
+msgid "Get notified about transport, emergencies & school events."
+msgstr "परिवहन, आपत्कालीन परिस्थिती आणि शाळा कार्यक्रमांची माहिती मिळवा."
+
+msgid "Performance Tracking"
+msgstr "प्रदर्शन ट्रॅकिंग"
+
+msgid "View attendance, grades and improvement areas easily."
+msgstr "उपस्थिती, गुण व सुधारणा क्षेत्रे सहज पहा."
+
+msgid "School Calendar"
+msgstr "शाळा कॅलेंडर"
+
+msgid "Never miss a holiday, test or PTM with our integrated planner."
+msgstr "आपल्या समाकलित नियोजकासह कोणताही सुट्ट, चाचणी किंवा PTM गहाळ करू नका."
+
+msgid "Teacher Feedback"
+msgstr "शिक्षक अभिप्राय"
+
+msgid "Direct communication and suggestions from class teachers."
+msgstr "वर्ग शिक्षकांकडून थेट संवाद व सूचना."
+
+msgid "Message Center"
+msgstr "संदेश केंद्र"
+
+msgid "Securely send and receive messages from school staff."
+msgstr "शाळा कर्मचारींकडून संदेश सुरक्षितपणे पाठवा आणि प्राप्त करा."
+
+msgid "Contact Us"
+msgstr "संपर्क करा"
+
+msgid "Need help or have a question? Reach out to us anytime!"
+msgstr "मदतीची आवश्यकता आहे किंवा प्रश्न आहे? केव्हाही संपर्क साधा!"
+
+msgid "Visit your school's ParentConnect portal for personalized support."
+msgstr "वैयक्तिकृत सहाय्यासाठी आपल्या शाळेचे पॅरेंटकनेक्ट पोर्टल पहा."
+
+msgid "Crafted for connected classrooms."
+msgstr "जोडलेल्या वर्गांसाठी तयार केले गेले."
+
+# Student dashboard nav or sections
+msgid "Diary"
+msgstr "डायरी"
+
+msgid "Alerts"
+msgstr "सूचना"
+
+msgid "Messages"
+msgstr "संदेश"
+
+msgid "Events"
+msgstr "घटना"
+
+msgid "Feedback"
+msgstr "अभिप्राय"
+
+msgid "Reports"
+msgstr "अहवाल"
+
+# Student register
+msgid "Student Register"
+msgstr "विद्यार्थी नोंदणी"
+
+msgid "Name"
+msgstr "नाव"
+
+msgid "Standard"
+msgstr "इयत्ता"
+
+msgid "Address"
+msgstr "पत्ता"
+
+msgid "Age"
+msgstr "वय"
+
+msgid "Register"
+msgstr "नोंदणी करा"
+
+# Messages from teachers
+msgid "Messages from Teachers"
+msgstr "शिक्षकांकडून संदेश"
+
+msgid "No messages yet."
+msgstr "अजून संदेश नाहीत."
+
+# Performance table headings
+msgid "Performance"
+msgstr "कामगिरी"
+
+msgid "Subject"
+msgstr "विषय"
+
+msgid "Score"
+msgstr "गुण"
+
+msgid "Remarks"
+msgstr "टिप्पणी"
+
+msgid "Last Updated"
+msgstr "शेवटचा सुधारणा"
+
+msgid "No performance records yet."
+msgstr "अजून कोणतीही कामगिरी रेकॉर्ड्स नाहीत."
+
+# Student details page
+msgid "Student Details"
+msgstr "विद्यार्थी तपशील"
+
+msgid "ID"
+msgstr "आयडी"
+
+msgid "Back to Home"
+msgstr "मुख्यपृष्ठावर परत जा"
+
+msgid "Delete"
+msgstr "हटवा"
+
+msgid "Are you sure?"
+msgstr "तुम्हाला खात्री आहे का?"
+
+# Login page
+msgid "Login As:"
+msgstr "प्रवेश रूप:"
+
+msgid "Student"
+msgstr "विद्यार्थी"
+
+msgid "Teacher"
+msgstr "शिक्षक"
+
+msgid "Username:"
+msgstr "वापरकर्तानाव:"
+
+msgid "Password:"
+msgstr "पासवर्ड:"
+
+msgid "Don't have an account?"
+msgstr "खाते नाही का?"
+
+msgid "Register here"
+msgstr "येथे नोंदणी करा"
+
+msgid "Register as teacher"
+msgstr "शिक्षक म्हणून नोंदणी करा"

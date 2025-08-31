@@ -1,0 +1,391 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% trans "ParentConnect - Student Dashboard" %}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+      background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+      background-color: #fefaf0;
+      color: #232323;
+    }
+    nav {
+      background-color: #1f4e3d; color: white;
+      padding: 20px 40px; display: flex;
+      justify-content: space-between; align-items: center; font-size: 18px;
+    }
+    nav a {
+      color: #ffe; margin-left: 20px;
+      text-decoration: none; font-weight: bold;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #ffeb3b; }
+    .container { max-width: 1100px; margin: 40px auto; padding: 20px; }
+    .tabs {
+      display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
+      margin-bottom: 30px;
+    }
+    .tab {
+      background-color: #ffefc3; padding: 10px 18px;
+      border-radius: 12px; border: 2px dashed #d4a019;
+      cursor: pointer; font-size: 16px; transition: all 0.3s;
+      outline: none;
+    }
+    .tab:hover, .tab:focus { background-color: #fff3d0; transform: scale(1.05); }
+    .tab.active { background-color: #fdd56f; border-color: #c17f00; }
+    .section {
+      background-color: #fffaf3; border: 2px dashed #c2b280;
+      padding: 25px; margin-bottom: 30px;
+      border-radius: 16px; box-shadow: 4px 4px 12px rgba(0,0,0,0.05);
+      display: none;
+    }
+    .section.active { display: block; }
+    .section h3 {
+      color: #4d3f29; margin-bottom: 15px;
+      font-size: 22px; border-bottom: 1px dashed #bfbfbf; padding-bottom: 8px;
+    }
+    ul { padding-left: 25px; margin-top: 10px; }
+    li { margin-bottom: 8px; }
+    .download-btn {
+      margin-top: 10px; background-color: #6a994e;
+      color: white; border: none; padding: 10px 16px;
+      border-radius: 8px; cursor: pointer;
+    }
+    .download-btn:hover { background-color: #588f41; }
+    select { padding: 6px; border-radius: 6px; border: 1px solid #ccc; }
+    #chat-box {
+      border: 1.5px solid #ececec;
+      padding: 13px;
+      height: 250px;
+      overflow-y: auto;
+      background: #fff8ec;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      font-size: 15px;
+      line-height: 1.65;
+      box-shadow: 0 1px 5px rgba(240,170,90,0.075);
+    }
+    #chat-input {
+      width: 74%;
+      padding: 9px;
+      border-radius: 7px;
+      border: 1.2px solid #e9b069;
+      box-shadow: 0 1px 6px rgba(255,193,77,0.08);
+      margin-right: 8px;
+    }
+    #study-tip-box {
+      background: #fff2db;
+      border-left: 5px solid #ff9800;
+      border-radius: 6px;
+      padding: 17px 14px;
+      font-size: 1.06rem;
+      margin-bottom: 13px;
+      box-shadow: 0 0.5px 3px #ffd19444;
+    }
+    #game-question {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    #game-answer {
+      padding: 7px;
+      border: 1.2px solid #f7b85e;
+      border-radius: 7px;
+      margin-right: 7px;
+      width: 80px;
+    }
+    #game-result {
+      margin-top: 10px;
+      font-weight: 600;
+      font-size: 1.02rem;
+    }
+    button {
+      padding: 8px 20px;
+      background: #ff9800;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      box-shadow: 0 2px 6px rgba(255,160,67,0.08);
+      transition: background 0.2s, transform 0.16s;
+    }
+    button:hover { background: #c66900; transform: translateY(-2px) scale(1.04);}
+    @media (max-width: 768px) {
+      .tabs { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div><strong>🎒 ParentConnect</strong></div>
+    <div>
+      <form method="post" action="{% url 'set_language' %}" style="display:inline;">
+        {% csrf_token %}
+        <select name="language" onchange="this.form.submit()">
+          <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🌐 English</option>
+          <option value="hi" {% if LANGUAGE_CODE == 'hi' %}selected{% endif %}>हिंदी</option>
+          <option value="mr" {% if LANGUAGE_CODE == 'mr' %}selected{% endif %}>मराठी</option>
+        </select>
+      </form>
+      <a href="index.html">{% trans "Home" %}</a>
+      <a href="{% url 'student_profile' %}">{% trans "Profile" %}</a>
+      <a href="{% url 'logout' %}" style="color: red;">🚪 Logout</a>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="tabs" role="tablist">
+      <div class="tab active" role="tab" aria-selected="true" tabindex="0"
+           onclick="showSection('diary', event)"
+           onkeydown="if(event.key==='Enter'){showSection('diary', event);}">📘 {% trans "Diary" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('alerts', event)"
+           onkeydown="if(event.key==='Enter'){showSection('alerts', event);}">📢 {% trans "Alerts" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('performance', event)"
+           onkeydown="if(event.key==='Enter'){showSection('performance', event);}">📊 {% trans "Performance" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('messages', event)"
+           onkeydown="if(event.key==='Enter'){showSection('messages', event);}">📩 {% trans "Messages" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('calendar', event)"
+           onkeydown="if(event.key==='Enter'){showSection('calendar', event);}">📅 {% trans "Events" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('feedback', event)"
+           onkeydown="if(event.key==='Enter'){showSection('feedback', event);}">🧠 {% trans "Feedback" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('report', event)"
+           onkeydown="if(event.key==='Enter'){showSection('report', event);}">📄 {% trans "Reports" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('mental_health', event)"
+           onkeydown="if(event.key==='Enter'){showSection('mental_health', event);}">💬 {% trans "Mental Health Chat" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('study_tips', event)"
+           onkeydown="if(event.key==='Enter'){showSection('study_tips', event);}">📚 {% trans "Daily Study Tips" %}</div>
+      <div class="tab" role="tab" aria-selected="false" tabindex="0"
+           onclick="showSection('mini_games', event)"
+           onkeydown="if(event.key==='Enter'){showSection('mini_games', event);}">🎯 {% trans "Mini Skill Games" %}</div>
+    </div>
+
+    <section id="diary" class="section active" role="tabpanel">
+      <h3>📒 {% trans "Today's Homework" %}</h3>
+      {% if diaries %}
+        <ul>
+          {% for d in diaries %}
+            <li>
+              <strong>{{ d.title }}</strong>: {{ d.content }}<br>
+              {% if d.file %}
+                <a href="{{ d.file.url }}" target="_blank" class="download-btn" download>📂 {% trans "Download" %}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{% trans "No diary updates yet." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="alerts" class="section" role="tabpanel">
+      <h3>🔔 {% trans "School Announcements" %}</h3>
+      {% if alerts %}
+        <ul>
+          {% for a in alerts %}
+            <li><strong>{{ a.title }}</strong>: {{ a.message }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{% trans "No alerts available." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="performance" class="section" role="tabpanel">
+      <h3>📊 {% trans "Academic Overview" %}</h3>
+      {% if performances %}
+        <canvas id="performanceChart" width="400" height="200" aria-label="Performance chart"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+          const ctx = document.getElementById('performanceChart').getContext('2d');
+          const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: {{ subjects|safe }},
+              datasets: [{
+                label: '{% trans "Score" %}',
+                data: {{ scores|safe }},
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100
+                }
+              }
+            }
+          });
+        </script>
+        <ul>
+          {% for p in performances %}
+            <li>{{ p.subject }}: {{ p.score }} ({{ p.remarks }})</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{% trans "No performance records yet." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="messages" class="section" role="tabpanel">
+      <h3>📩 {% trans "Messages from School" %}</h3>
+      {% if messages %}
+        {% for m in messages %}
+          <p><strong>{{ m.teacher.name }}:</strong> {{ m.message }}</p>
+        {% endfor %}
+      {% else %}
+        <p>{% trans "No messages yet." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="calendar" class="section" role="tabpanel">
+      <h3>📅 {% trans "Upcoming Events" %}</h3>
+      {% if events %}
+        <ul>
+          {% for e in events %}
+            <li>{{ e.title }} - {{ e.date }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{% trans "No events available." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="feedback" class="section" role="tabpanel">
+      <h3>🧠 {% trans "Teacher Feedback" %}</h3>
+      {% if feedbacks %}
+        {% for f in feedbacks %}
+          <p><strong>{{ f.teacher.name }}</strong>: {{ f.feedback }}</p>
+        {% endfor %}
+      {% else %}
+        <p>{% trans "No feedback available." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="report" class="section" role="tabpanel">
+      <h3>📄 {% trans "Download Reports" %}</h3>
+      {% if reports %}
+        {% for r in reports %}
+          <p><strong>{{ r.title }}</strong> -
+            <a href="{{ r.report_file.url }}" target="_blank" class="download-btn" download>
+              ⬇️ {% trans "Download" %}
+            </a>
+          </p>
+        {% endfor %}
+      {% else %}
+        <p>{% trans "No reports uploaded yet." %}</p>
+      {% endif %}
+    </section>
+
+    <section id="mental_health" class="section" role="tabpanel">
+      <h3>💬 {% trans "Mental Health Chat" %}</h3>
+      <div id="chat-box"><b>Bot:</b> Hi! I'm here to listen. How are you feeling today?</div>
+      <input type="text" id="chat-input" placeholder="{% trans 'Type your message...' %}">
+      <button onclick="sendMessage()">{% trans 'Send' %}</button>
+    </section>
+
+    <section id="study_tips" class="section" role="tabpanel">
+      <h3>📚 {% trans "Today's Study Tip" %}</h3>
+      <div id="study-tip-box">Loading...</div>
+      <button onclick="loadStudyTip()">{% trans "Refresh Tip" %}</button>
+    </section>
+
+    <section id="mini_games" class="section" role="tabpanel">
+      <h3>🎯 {% trans "Mini Skill Game: Quick Math" %}</h3>
+      <p id="game-question"></p>
+      <input type="number" id="game-answer">
+      <button onclick="checkAnswer()">{% trans "Submit" %}</button>
+      <p id="game-result"></p>
+    </section>
+
+  </main>
+  <script>
+    function showSection(id, event) {
+      const tabs = document.querySelectorAll('.tab');
+      const sections = document.querySelectorAll('.section');
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      });
+      sections.forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      if (event) {
+        event.target.classList.add('active');
+        event.target.setAttribute('aria-selected', 'true');
+      }
+    }
+
+    // Mental Health Chat
+    async function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const message = input.value.trim();
+      if (!message) return;
+      const chatBox = document.getElementById('chat-box');
+      chatBox.innerHTML += `<br><b>You:</b> ${message}`;
+      input.value = '';
+      try {
+        const res = await fetch("{% url 'mental_health_chat' %}", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({message: message})
+        });
+        const data = await res.json();
+        chatBox.innerHTML += `<br><b>Bot:</b> ${data.reply}`;
+        chatBox.scrollTop = chatBox.scrollHeight;
+      } catch {
+        chatBox.innerHTML += "<br><b>Bot:</b> I'm here for you, but I’m having trouble connecting right now.";
+      }
+    }
+
+    // Daily Study Tips
+    async function loadStudyTip() {
+      const tipBox = document.getElementById('study-tip-box');
+      tipBox.innerHTML = "Loading...";
+      try {
+        const res = await fetch("{% url 'daily_study_tip' %}");
+        const data = await res.json();
+        tipBox.innerHTML = data.tip;
+      } catch {
+        tipBox.innerHTML = "Stay curious and consistent — even 15 minutes of focused study daily can make a big difference!";
+      }
+    }
+    loadStudyTip();
+
+    // Mini Skill Game
+    let correctAnswer;
+    function newGameQuestion() {
+      const num1 = Math.floor(Math.random() * 10) + 1;
+      const num2 = Math.floor(Math.random() * 10) + 1;
+      correctAnswer = num1 + num2;
+      document.getElementById('game-question').innerText = `What is ${num1} + ${num2}?`;
+      document.getElementById('game-result').innerText = '';
+      document.getElementById('game-answer').value = '';
+    }
+    function checkAnswer() {
+      const userAnswer = parseInt(document.getElementById('game-answer').value);
+      document.getElementById('game-result').innerText =
+        userAnswer === correctAnswer ? "✅ Correct!" : "❌ Try again!";
+      if (userAnswer === correctAnswer) {
+        setTimeout(newGameQuestion, 1200);
+      }
+    }
+    newGameQuestion();
+  </script>
+</body>
+</html>

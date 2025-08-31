@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Alerts</title>
+</head>
+<body>
+    <h2>📢 Alerts</h2>
+    {% if alerts %}
+        <ul>
+        {% for a in alerts %}
+            <li>
+                <strong>{{ a.title }}</strong> - {{ a.created_at|date:"d M Y H:i" }}<br>
+                {{ a.message }}<hr>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No alerts available.</p>
+    {% endif %}
+</body>
+</html>

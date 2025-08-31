@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 30px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            margin-bottom: 20px;
+        }
+
+        .info label {
+            display: block;
+            color: #555;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .info p {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-btn:hover {
+            background-color: #2d85c3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>👩‍🏫 Teacher Profile</h2>
+
+        <div class="info">
+            <label>Name:</label>
+            <p>{{ teacher.name }}</p>
+        </div>
+
+        <div class="info">
+            <label>Email:</label>
+            <p>{{ teacher.email }}</p>
+        </div>
+
+        <div class="info">
+            <label>Subject:</label>
+            <p>{{ teacher.subject }}</p>
+        </div>
+
+        <div class="info">
+            <label>Phone:</label>
+            <p>{{ teacher.phone }}</p>
+        </div>
+
+        <a href="{% url 'teacher_dashboard' %}" class="back-btn">⬅ Back to Dashboard</a>
+    </div>
+</body>
+</html>

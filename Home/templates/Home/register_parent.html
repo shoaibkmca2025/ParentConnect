@@ -1,0 +1,133 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Register as Parent" %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f2f2f2;
+            padding: 30px;
+        }
+        .form-box {
+            background: #fff;
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 500;
+            color: #444;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+        textarea {
+            resize: vertical;
+        }
+        .button-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+button {
+    padding: 10px 25px;
+    background: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover {
+    background: #16a085;
+}
+
+    </style>
+</head>
+<body>
+<div class="form-box">
+    <h2>{% trans "Register as Parent" %}</h2>
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Internal Info -->
+        <h3>{% trans "Internal Information" %}</h3>
+        <label for="guardian_id">{% trans "Guardian ID" %}</label>
+        <input type="text" name="guardian_id" id="guardian_id" required>
+
+        <label for="reg_date">{% trans "Registration Date" %}</label>
+        <input type="text" id="reg_date" value="{{ today|default:'' }}">
+
+        <!-- Father's Info -->
+        <h3>{% trans "Father's Information" %}</h3>
+        <label for="father_name">{% trans "Father's Name" %}</label>
+        <input type="text" name="father_name" id="father_name" required>
+
+        <label for="father_qualification">{% trans "Educational Qualification" %}</label>
+        <input type="text" name="father_qualification" id="father_qualification">
+
+        <label for="father_designation">{% trans "Designation" %}</label>
+        <input type="text" name="father_designation" id="father_designation">
+
+        <label for="father_office_address">{% trans "Office Address" %}</label>
+        <textarea name="father_office_address" id="father_office_address"></textarea>
+
+        <label for="father_phone">{% trans "Telephone No." %}</label>
+        <input type="text" name="father_phone" id="father_phone">
+
+        <label for="father_email">{% trans "Email Address" %}</label>
+        <input type="email" name="father_email" id="father_email">
+
+        <label for="father_aadhaar">{% trans "Aadhaar No." %}</label>
+        <input type="text" name="father_aadhaar" id="father_aadhaar">
+
+        <label for="father_signature">{% trans "Specimen Signature" %}</label>
+        <input type="text" name="father_signature" id="father_signature">
+
+        <!-- Mother's Info -->
+        <h3>{% trans "Mother's Information" %}</h3>
+        <label for="mother_name">{% trans "Mother's Name" %}</label>
+        <input type="text" name="mother_name" id="mother_name" required>
+
+        <label for="mother_qualification">{% trans "Educational Qualification" %}</label>
+        <input type="text" name="mother_qualification" id="mother_qualification">
+
+        <label for="mother_designation">{% trans "Designation" %}</label>
+        <input type="text" name="mother_designation" id="mother_designation">
+
+        <label for="mother_office_address">{% trans "Office Address" %}</label>
+        <textarea name="mother_office_address" id="mother_office_address"></textarea>
+
+        <label for="mother_phone">{% trans "Telephone No." %}</label>
+        <input type="text" name="mother_phone" id="mother_phone">
+
+        <label for="mother_email">{% trans "Email Address" %}</label>
+        <input type="email" name="mother_email" id="mother_email">
+
+        <label for="mother_aadhaar">{% trans "Aadhaar No." %}</label>
+        <input type="text" name="mother_aadhaar" id="mother_aadhaar">
+
+        <label for="mother_signature">{% trans "Specimen Signature" %}</label>
+        <input type="text" name="mother_signature" id="mother_signature">
+
+<div class="button-wrapper">
+    <button type="submit">{% trans "Submit" %}</button>
+</div>
+    </form>
+</div>
+</body>
+</html>

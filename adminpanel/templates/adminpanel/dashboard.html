@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      margin: 20px; 
+      background: #f9fafc;
+      color: #333;
+    }
+    h1 {
+      color: #1a3e72;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-align: center;
+      letter-spacing: 1.5px;
+    }
+    form {
+      max-width: 400px;
+      margin: 0 auto 40px auto;
+      text-align: center;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-right: 10px;
+      color: #2258a3;
+    }
+    select {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1.5px solid #2258a3;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+      outline: none;
+      min-width: 180px;
+    }
+    select:hover, select:focus {
+      border-color: #1abc9c;
+      box-shadow: 0 0 5px #1abc9c;
+    }
+    table { 
+      width: 90%;
+      max-width: 1100px;
+      margin: 0 auto 50px auto; 
+      border-collapse: separate; 
+      border-spacing: 0 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      padding: 14px 20px;
+      font-size: 1rem;
+      color: #444;
+    }
+    th {
+      background-color: #2258a3;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    tr {
+      background: #f8fafd;
+      transition: background-color 0.3s ease;
+      border-radius: 12px;
+    }
+    tr:hover {
+      background-color: #e1f5f2;
+    }
+    /* Row spacing for separate borders effect */
+    tbody tr:first-child td:first-child {
+      border-top-left-radius: 12px;
+    }
+    tbody tr:first-child td:last-child {
+      border-top-right-radius: 12px;
+    }
+    tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 12px;
+    }
+    tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 12px;
+    }
+    .btn {
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-right: 10px;
+      user-select: none;
+      display: inline-block;
+      transition: background-color 0.25s ease;
+      border: none;
+      color: white;
+    }
+    .approve {
+      background-color: #27ae60;
+    }
+    .approve:hover {
+      background-color: #1e8449;
+      text-decoration: none;
+      color: white;
+    }
+    .delete {
+      background-color: #e74c3c;
+    }
+    .delete:hover {
+      background-color: #b03a2e;
+      text-decoration: none;
+      color: white;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      table {
+        width: 100%;
+        font-size: 0.9rem;
+      }
+      th, td {
+        padding: 10px 12px;
+      }
+      .btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        margin-right: 6px;
+      }
+    }
+    .back-home {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .back-home a {
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 6px 12px;
+      border: 2px solid #3498db;
+      border-radius: 6px;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .back-home a:hover {
+      background-color: #3498db;
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+<div class="back-home">
+  <a href="{% url 'Home' %}" class="back-btn">🏠 Back to Home</a>
+</div>
+<h1>Admin Dashboard</h1>
+<form method="get" action="">
+  <label for="class-select">Filter by Class:</label>
+  <select id="class-select" name="class" onchange="this.form.submit()">
+    <option value="">All Classes</option>
+    {% for cls in classes %}
+    <option value="{{ cls }}" {% if cls == selected_class %}selected{% endif %}>{{ cls }}</option>
+    {% endfor %}
+  </select>
+</form>
+
+<h2>Students</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th><th>Class</th><th>Division</th><th>Approved</th><th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for student in students %}
+    <tr>
+      <td>{{ student.name }}</td>
+      <td>{{ student.std }}</td>
+      <td>{{ student.division }}</td>
+      <td>{{ student.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not student.is_approved %}
+          <form method="post" action="{% url 'approve_registration' 'student' student.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn approve">Approve</button>
+          </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'student' student.id %}" style="display:inline;" onsubmit="return confirm('Delete this student?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">No students found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Teachers</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Name</th><th>Class</th><th>Division</th><th>Approved</th><th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for teacher in teachers %}
+    <tr>
+      <td>{{ teacher.name }}</td>
+      <td>{{ teacher.std }}</td>
+      <td>{{ teacher.division }}</td>
+      <td>{{ teacher.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not teacher.is_approved %}
+          <form method="post" action="{% url 'approve_registration' 'teacher' teacher.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn approve">Approve</button>
+          </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'teacher' teacher.id %}" style="display:inline;" onsubmit="return confirm('Delete this teacher?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">No teachers found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Parents</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Guardian ID</th><th>Father Name</th><th>Mother Name</th><th>Approved</th><th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for parent in parents %}
+    <tr>
+      <td>{{ parent.guardian_id }}</td>
+      <td>{{ parent.father_name }}</td>
+      <td>{{ parent.mother_name }}</td>
+      <td>{{ parent.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not parent.is_approved %}
+          <form method="post" action="{% url 'approve_registration' 'parent' parent.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn approve">Approve</button>
+          </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'parent' parent.id %}" style="display:inline;" onsubmit="return confirm('Delete this parent?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">No parents found.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<h2>Diary Entries</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th><th>Teacher</th><th>Created At</th><th>Approved</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for diary in diaries %}
+    <tr>
+      <td>{{ diary.title }}</td>
+      <td>{{ diary.teacher.name }}</td>
+      <td>{{ diary.created_at }}</td>
+      <td>{{ diary.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not diary.is_approved %}
+        <form method="post" action="{% url 'approve_registration' 'diary' diary.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn approve">Approve</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'diary' diary.id %}" style="display:inline;" onsubmit="return confirm('Delete this diary entry?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="5">No diary entries found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Alerts</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th><th>Teacher</th><th>Created At</th><th>Approved</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for alert in alerts %}
+    <tr>
+      <td>{{ alert.title }}</td>
+      <td>{{ alert.teacher.name }}</td>
+      <td>{{ alert.created_at }}</td>
+      <td>{{ alert.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not alert.is_approved %}
+        <form method="post" action="{% url 'approve_registration' 'alert' alert.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn approve">Approve</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'alert' alert.id %}" style="display:inline;" onsubmit="return confirm('Delete this alert?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="5">No alerts found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Performances</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Student</th><th>Subject</th><th>Score</th><th>Remarks</th><th>Updated At</th><th>Approved</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for performance in performances %}
+    <tr>
+      <td>{{ performance.student_name }}</td>
+      <td>{{ performance.subject }}</td>
+      <td>{{ performance.score }}</td>
+      <td>{{ performance.remarks }}</td>
+      <td>{{ performance.updated_at }}</td>
+      <td>{{ performance.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not performance.is_approved %}
+        <form method="post" action="{% url 'approve_registration' 'performance' performance.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn approve">Approve</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'performance' performance.id %}" style="display:inline;" onsubmit="return confirm('Delete this performance record?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="7">No performances found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Messages</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Parent Name</th><th>Message</th><th>Sent At</th><th>Approved</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for message in messages %}
+    <tr>
+      <td>{{ message.parent_name }}</td>
+      <td>{{ message.message }}</td>
+      <td>{{ message.sent_at }}</td>
+      <td>{{ message.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not message.is_approved %}
+        <form method="post" action="{% url 'approve_registration' 'message' message.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn approve">Approve</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'message' message.id %}" style="display:inline;" onsubmit="return confirm('Delete this message?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="5">No messages found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Events</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th><th>Date</th><th>Teacher</th><th>Approved</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for event in events %}
+    <tr>
+      <td>{{ event.title }}</td>
+      <td>{{ event.date }}</td>
+      <td>{{ event.teacher.name }}</td>
+      <td>{{ event.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not event.is_approved %}
+        <form method="post" action="{% url 'approve_registration' 'event' event.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn approve">Approve</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'event' event.id %}" style="display:inline;" onsubmit="return confirm('Delete this event?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="5">No events found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Reports</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th><th>Teacher</th><th>Uploaded At</th><th>Approved</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for report in reports %}
+    <tr>
+      <td>{{ report.title }}</td>
+      <td>{{ report.teacher.name }}</td>
+      <td>{{ report.uploaded_at }}</td>
+      <td>{{ report.is_approved|yesno:"Yes,No" }}</td>
+      <td>
+        {% if not report.is_approved %}
+        <form method="post" action="{% url 'approve_registration' 'report' report.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn approve">Approve</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{% url 'delete_registration' 'report' report.id %}" style="display:inline;" onsubmit="return confirm('Delete this report?');">
+          {% csrf_token %}
+          <button type="submit" class="btn delete">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="5">No reports found.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</body>
+</html>

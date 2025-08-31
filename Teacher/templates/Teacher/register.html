@@ -1,0 +1,156 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register as Teacher</title>
+    <style>
+        body {
+            background-color: #f9faff;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .register-box {
+            background: white;
+            padding: 30px;
+            max-width: 500px;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 12px;
+            color: #333;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        input[type="file"] {
+            padding: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        input[type="submit"]:hover {
+            background-color: #219150;
+        }
+        .inline-group {
+            display: flex;
+            gap: 10px;
+        }
+        .inline-group select, .inline-group input {
+            flex: 1;
+        }
+        @media (max-width: 600px) {
+            .inline-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-box">
+        <h2>Teacher Registration</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Name:</label>
+            <input type="text" name="name" placeholder="Enter full name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" placeholder="Enter email address" required>
+
+            <label>Phone:</label>
+            <input type="text" name="phone" placeholder="Enter phone number" pattern="[0-9]{10}" title="Enter 10-digit number" required>
+
+            <label>Gender:</label>
+            <select name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label>Date of Birth:</label>
+            <input type="date" name="date_of_birth">
+
+            <label>Subject:</label>
+            <input type="text" name="subject" placeholder="Enter subject" required>
+
+            <label>Qualification:</label>
+            <input type="text" name="qualification" placeholder="Enter qualification">
+
+            <label>Experience (Years):</label>
+            <input type="number" name="experience" min="0" placeholder="Enter years of experience">
+
+            <label>Teacher ID:</label>
+            <input type="text" name="teacher_id" placeholder="Enter teacher ID" required>
+
+            <label>Address:</label>
+            <textarea name="address" placeholder="Enter full address"></textarea>
+
+            <div class="inline-group">
+                <div>
+                    <label>City:</label>
+                    <input type="text" name="city" placeholder="City">
+                </div>
+                <div>
+                    <label>State:</label>
+                    <input type="text" name="state" placeholder="State">
+                </div>
+            </div>
+
+            <label>Pincode:</label>
+            <input type="text" name="pincode" placeholder="Enter pincode" pattern="[0-9]{6}" title="Enter 6-digit pincode">
+
+            <label>Profile Picture:</label>
+            <input type="file" name="profile_picture" accept="image/*">
+
+            <!-- Standard -->
+            <label for="std">Standard:</label>
+            <select name="std" id="std" required>
+                <option value="">Select Standard</option>
+                {% for grade in grades %}
+                    <option value="{{ grade }}">{{ grade }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Division -->
+            <label for="division">Division:</label>
+            <select name="division" id="division" required>
+                <option value="">Select Division</option>
+                {% for div in divisions %}
+                    <option value="{{ div }}">{{ div }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</body>
+</html>

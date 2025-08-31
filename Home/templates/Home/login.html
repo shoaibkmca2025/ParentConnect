@@ -1,0 +1,103 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "Login - ParentConnect" %}</title>
+    <style>
+        body {
+            background-color: #eef3f7;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+        }
+        .login-box {
+            background-color: white;
+            max-width: 400px;
+            margin: 80px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #1abc9c;
+            color: white;
+            padding: 12px;
+            border: none;
+            font-size: 16px;
+            margin-top: 25px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #159d85;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .register-link a {
+            color: #1abc9c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .back-home a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="login-box">
+    <h2>{% trans "Login" %}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label>{% trans "Login As:" %}</label>
+        <select name="user_type" required>
+            <option value="student">{% trans "Student" %}</option>
+            <option value="teacher">{% trans "Teacher" %}</option>
+            <option value="admin">{% trans "Admin" %}</option>
+        </select>
+        <label>{% trans "Username:" %}</label>
+        <input type="text" name="username" required>
+        <label>{% trans "Password:" %}</label>
+        <input type="password" name="password" required>
+        <input type="submit" value="{% trans 'Login' %}">
+    </form>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <div class="register-link">
+        <p>{% trans "Don't have an account?" %} <a href="{% url 'register_user' %}">{% trans "Register here" %}</a></p>
+        <p>{% trans "Don't have an account?" %} <a href="{% url 'teacher_register' %}">{% trans "Register as teacher" %}</a></p>
+    </div>
+    <div class="back-home">
+        <a href="{% url 'Home' %}">← {% trans "Back to Home" %}</a>
+    </div>
+</div>
+</body>
+</html>

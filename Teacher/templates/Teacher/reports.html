@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Upload Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f9faff;
+        }
+        .box {
+            background: white;
+            padding: 25px;
+            max-width: 500px;
+            margin: 50px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #34495e;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background: #34495e;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background: #2c3e50;
+        }
+        .back-btn {
+            display: inline-block;
+            text-align: center;
+            background: #2ecc71;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .back-btn:hover {
+            background: #27ae60;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>Upload Report</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Report Title:</label>
+        <input type="text" name="title" required>
+
+        <label>Description:</label>
+        <textarea name="description" rows="4"></textarea>
+
+        <label>Attach Report File:</label>
+        <input type="file" name="report_file" required>
+
+        <input type="submit" value="Upload Report">
+    </form>
+
+    <!-- ✅ Back to Dashboard Button -->
+    <a href="{% url 'teacher_dashboard' %}" class="back-btn">⬅ Back to Dashboard</a>
+</div>
+</body>
+</html>
